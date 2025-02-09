@@ -1,9 +1,10 @@
+import { ThemeProvider } from './contexts/ThemeContext';
 import './globals.css'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Next.js App',
-  description: 'Created with Next.js',
+  title: 'Biblical Wisdom',
+  description: 'Chat with Biblical figures and explore scripture',
 }
 
 export default function RootLayout({
@@ -13,7 +14,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <link 
+          href="https://fonts.googleapis.com/icon?family=Material+Icons" 
+          rel="stylesheet"
+        />
+      </head>
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   )
 }
