@@ -7,11 +7,13 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Set npm registry to use secure connection
-RUN npm config set registry https://registry.npmjs.org/
+# Update npm and configure registry
+RUN npm install -g npm@latest && \
+    npm config set registry https://registry.npmjs.org/ && \
+    npm config set strict-ssl false
 
-# Install dependencies
-RUN npm install
+# Install dependencies with legacy peer deps flag
+RUN npm install --legacy-peer-deps
 
 # Copy all files
 COPY . .
