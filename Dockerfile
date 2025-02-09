@@ -23,4 +23,4 @@ RUN npm run build
 EXPOSE $PORT
 
 # Start the app
-CMD ["npm", "start"] 
+CMD ["npm", "start"]
