@@ -1,4 +1,4 @@
-import { ThemeProvider } from './contexts/ThemeContext';
+import { ThemeProvider } from './contexts/ThemeContext'
 import './globals.css'
 import type { Metadata } from 'next'
 
@@ -13,14 +13,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <link 
           href="https://fonts.googleapis.com/icon?family=Material+Icons" 
           rel="stylesheet"
         />
       </head>
-      <body>
+      <body className="min-h-screen bg-stone-900">
         <ThemeProvider>
           {children}
         </ThemeProvider>

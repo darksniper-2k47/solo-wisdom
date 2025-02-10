@@ -30,7 +30,7 @@ export const characters: Character[] = [
   },
   {
     id: 'paul',
-    name: 'abraham-icon',
+    name: 'Apostle Paul',
     image: '/paul-icon.jpg',
     description: 'The great apostle to the Gentiles',
     followers: '421.3k'

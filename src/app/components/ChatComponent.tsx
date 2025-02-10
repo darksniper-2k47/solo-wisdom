@@ -199,21 +199,21 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
   if (!isReady) return null;
 
   return (
-    <div className="flex flex-col h-full bg-white dark:bg-stone-900 shadow-lg">
+    <div className="flex flex-col h-full bg-stone-900">
       {/* Chat Header */}
-      <div className="border-b border-stone-300 dark:border-stone-700 p-4 flex items-center justify-between bg-white dark:bg-stone-950 shadow-sm">
+      <div className="border-b border-stone-800 p-4 flex items-center justify-between bg-stone-950">
         <div className="flex items-center">
-          <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+          <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
             <Image
               src={currentCharacter?.image || '/default-icon.jpg'}
               alt={currentCharacter?.name || 'Topic'}
-              width={48}
-              height={48}
+              width={40}
+              height={40}
               className="object-cover"
             />
           </div>
           <div>
-            <h2 className="text-xl font-serif text-stone-100">
+            <h2 className="text-lg font-medium text-stone-100">
               {currentCharacter?.name || currentTopic?.title}
             </h2>
             <p className="text-sm text-stone-400">{chatTitle}</p>
@@ -222,10 +222,10 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50 dark:bg-stone-900">
+      <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
         {error && (
           <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded">
-            <span className="block sm:inline">{error}</span>
+            {error}
           </div>
         )}
         
@@ -242,7 +242,7 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
               }`}
             >
               {message.role === 'assistant' && (
-                <div className="w-8 h-8 rounded-full overflow-hidden mr-2 shadow-md">
+                <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
                   <Image
                     src={currentCharacter?.image || '/default-icon.jpg'}
                     alt={currentCharacter?.name || 'Character'}
@@ -253,17 +253,17 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
                 </div>
               )}
               <div
-                className={`p-4 rounded-lg shadow-md break-words ${
+                className={`p-3 rounded-lg ${
                   message.role === 'user'
-                    ? 'bg-amber-600 dark:bg-amber-700 text-white'
-                    : 'bg-white dark:bg-stone-800 text-stone-900 dark:text-stone-100 border border-stone-200 dark:border-transparent'
+                    ? 'bg-amber-600 text-white ml-2'
+                    : 'bg-stone-800 text-stone-100'
                 }`}
               >
-                <div className="prose prose-invert max-w-none whitespace-pre-wrap">
+                <div className="prose prose-invert max-w-none">
                   {formatMessage(message.content)}
                 </div>
                 {message.timestamp && (
-                  <div className="text-xs mt-2 opacity-50">
+                  <div className="text-xs mt-1 opacity-50">
                     {new Date(message.timestamp).toLocaleTimeString()}
                   </div>
                 )}
@@ -274,24 +274,23 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
       </div>
 
       {/* Input Area */}
-      <div className="border-t border-stone-300 dark:border-stone-700 p-4 bg-white dark:bg-stone-800 shadow-lg">
-        <form onSubmit={handleSubmit} className="flex space-x-4">
+      <div className="border-t border-stone-800 p-4 bg-stone-950">
+        <form onSubmit={handleSubmit} className="flex space-x-2">
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask for wisdom..."
-            className="flex-1 p-4 bg-stone-50 dark:bg-stone-700 text-stone-900 dark:text-stone-100 
-                     placeholder-stone-500 dark:placeholder-stone-400 rounded-lg 
+            className="flex-1 p-3 bg-stone-800 text-stone-100 
+                     placeholder-stone-500 rounded-lg 
                      focus:outline-none focus:ring-2 focus:ring-amber-500
-                     border border-stone-300 dark:border-stone-600 shadow-sm"
+                     border border-stone-700"
           />
           <button 
             type="submit"
             disabled={isLoading || !input.trim()}
-            className="px-6 py-4 bg-amber-600 dark:bg-amber-700 text-white rounded-lg 
-                     hover:bg-amber-700 dark:hover:bg-amber-800 
-                     transition-colors font-semibold disabled:opacity-50 disabled:cursor-not-allowed
-                     shadow-sm hover:shadow-md"
+            className="px-4 py-3 bg-amber-600 text-white rounded-lg 
+                     hover:bg-amber-700 transition-colors
+                     disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? (
               <span className="material-icons animate-spin">refresh</span>
