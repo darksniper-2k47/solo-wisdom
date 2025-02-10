@@ -79,20 +79,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   // Update new chat function
   const startNewChat = () => {
-    const path = window.location.pathname;
-    const segments = path.split('/').filter(Boolean);
+    const currentContext = getCurrentContext();
     
-    if (segments.length >= 2) {
-      const type = segments[0]; // 'chat' or 'topic'
-      const id = segments[1];   // character or topic id
-      if (type === 'chat' || type === 'topic') {
-        router.push(`/${type}/${id}`);
-      } else {
-        router.push('/');
+    if (currentContext) {
+      if (currentContext.type === 'chat') {
+        // For character chats
+        router.push(`/chat/${currentContext.id}`);
+      } else if (currentContext.type === 'topic') {
+        // For topic chats
+        router.push(`/topic/${currentContext.id}`);
       }
     } else {
+      // If no context, go to home
       router.push('/');
     }
+    
+    // Clear current chat from localStorage
+    const history = JSON.parse(localStorage.getItem('chatHistory') || '[]');
+    localStorage.setItem('chatHistory', JSON.stringify(history));
   };
 
   return (
@@ -120,26 +124,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
           </div>
           
-          {/* Navigation - Only show New Chat if no history exists */}
-          <div className="space-y-2">
-            <button 
-              onClick={startNewChat}
-              className="flex items-center p-2 hover:bg-stone-200 dark:hover:bg-stone-800 rounded-lg w-full"
-            >
-              <span className="material-icons mr-2">add</span>
-              New Chat
-            </button>
-            
-            {currentChats.length > 0 && (
-              <button 
-                onClick={clearAllChats}
-                className="flex items-center p-2 hover:bg-stone-200 dark:hover:bg-stone-800 rounded-lg w-full text-red-500 dark:text-red-400"
-              >
-                <span className="material-icons mr-2">delete_sweep</span>
-                Clear All Chats
-              </button>
-            )}
-          </div>
+          {/* New Chat Button */}
+          <button 
+            onClick={startNewChat}
+            className="flex items-center p-2 bg-amber-600 hover:bg-amber-700 
+              text-white rounded-lg w-full mb-4 transition-colors"
+          >
+            <span className="material-icons mr-2">add</span>
+            New Chat
+          </button>
 
           {/* Chat History - Only show if there are chats */}
           {currentChats.length > 0 && (

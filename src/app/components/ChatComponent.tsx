@@ -199,20 +199,31 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
   if (!isReady) return null;
 
   return (
-    <div className="flex flex-col h-full bg-stone-900">
-      {/* Chat Header */}
-      <div className="border-b border-stone-800 p-4 flex items-center justify-between bg-stone-950">
+    <div className="flex flex-col h-screen bg-stone-900">
+      {/* Header */}
+      <div className="border-b border-stone-800 p-4 bg-stone-950">
         <div className="flex items-center">
-          <div className="w-10 h-10 rounded-full overflow-hidden mr-3">
-            <Image
-              src={currentCharacter?.image || '/default-icon.jpg'}
-              alt={currentCharacter?.name || 'Topic'}
-              width={40}
-              height={40}
-              className="object-cover"
-            />
-          </div>
-          <div>
+          {characterId ? (
+            // Show character image
+            <div className="w-10 h-10 rounded-full overflow-hidden">
+              <Image
+                src={currentCharacter?.image || '/default-icon.jpg'}
+                alt={currentCharacter?.name || 'Character'}
+                width={40}
+                height={40}
+                className="object-cover"
+              />
+            </div>
+          ) : topicId ? (
+            // Show topic icon
+            <div className="w-10 h-10 rounded-full bg-amber-600 flex items-center justify-center">
+              <span className="material-icons text-2xl text-white">
+                {currentTopic?.icon}
+              </span>
+            </div>
+          ) : null}
+          
+          <div className="ml-3">
             <h2 className="text-lg font-medium text-stone-100">
               {currentCharacter?.name || currentTopic?.title}
             </h2>
@@ -221,8 +232,8 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
         </div>
       </div>
 
-      {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {error && (
           <div className="bg-red-900/50 border border-red-700 text-red-200 px-4 py-3 rounded">
             {error}
@@ -232,24 +243,26 @@ export default function ChatComponent({ characterId, topicId, chatId }: ChatComp
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`flex ${
-              message.role === 'user' ? 'justify-end' : 'justify-start'
-            }`}
+            className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            <div
-              className={`flex max-w-[80%] ${
-                message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
-              }`}
-            >
+            <div className={`flex max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
               {message.role === 'assistant' && (
                 <div className="w-8 h-8 rounded-full overflow-hidden mr-2">
-                  <Image
-                    src={currentCharacter?.image || '/default-icon.jpg'}
-                    alt={currentCharacter?.name || 'Character'}
-                    width={32}
-                    height={32}
-                    className="object-cover"
-                  />
+                  {characterId ? (
+                    <Image
+                      src={currentCharacter?.image || '/default-icon.jpg'}
+                      alt={currentCharacter?.name || 'Character'}
+                      width={32}
+                      height={32}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center">
+                      <span className="material-icons text-sm text-white">
+                        {currentTopic?.icon}
+                      </span>
+                    </div>
+                  )}
                 </div>
               )}
               <div
